@@ -13,4 +13,5 @@ provider "heroku" {
 resource "heroku_app" "default" {
   name   = "herge-lab"
   region = "eu"
+  stack = "container"
 }
