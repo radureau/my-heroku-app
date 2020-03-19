@@ -3,3 +3,4 @@
 *credentials.json
 go.mod
 go.sum
+*/vendor
