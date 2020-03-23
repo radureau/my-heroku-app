@@ -27,6 +27,7 @@ jobs:
         with:
           args: (cd herge-lab ; go mod vendor)
       - name: heroku
+	working-directory: ./herge-lab
         uses: akhileshns/heroku-deploy@v3.0.0 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}

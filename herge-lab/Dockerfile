@@ -4,7 +4,7 @@ RUN umask 755
 RUN apt-get install -y ca-certificates
 
 RUN mkdir /app
-ADD ./herge-lab /app/
+ADD . /app/
 WORKDIR /app
 
 ENV CGO_ENABLED=0
