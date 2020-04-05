@@ -1,4 +1,4 @@
-FROM golang:1.13 AS builder
+FROM golang:1.14 AS builder
 
 RUN umask 755
 RUN apt-get install -y ca-certificates
