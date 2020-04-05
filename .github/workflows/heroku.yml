@@ -19,6 +19,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
       - name: golang
         uses: cedrickring/golang-action@1.5.1
         env:
@@ -26,11 +27,18 @@ jobs:
           PROJECT_PATH: "herge-lab"
         with:
           args: (cd herge-lab ; go mod vendor)
-      - name: heroku
-	working-directory: ./herge-lab
-        uses: akhileshns/heroku-deploy@v3.0.0 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "herge-lab" #Must be unique in Heroku
-          heroku_email: "gabrielradureau@gmail.com"
-          usedocker: true
+
+      - name: Login to Heroku Container registry
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+      - name: Build and push
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:push -a herge-lab web
+        working-directory: herge-lab
+      - name: Release
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a herge-lab web
+        working-directory: herge-lab
