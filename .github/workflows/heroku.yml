@@ -19,10 +19,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      
+      - name: Set github token to access private repo
+        run: git config --global url."https://radureau:${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}@github.com".insteadOf "https://github.com"
 
       - name: golang dependencies
         env:
           GO111MODULE: "on"
+          GOPRIVATE: "github.com/radureau/my-heroku-app-pkg"
         run: go version && go mod vendor
         working-directory: herge-lab
 
@@ -33,7 +37,7 @@ jobs:
       - name: Build and push
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:push -a herge-lab web
+        run: heroku container:push -a herge-lab web --arg GITHUB_ACCESS_TOKEN=${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}
         working-directory: herge-lab
       - name: Release
         env: 

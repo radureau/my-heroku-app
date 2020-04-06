@@ -7,11 +7,16 @@ RUN mkdir /app
 ADD . /app/
 WORKDIR /app
 
+ARG GITHUB_ACCESS_TOKEN
+RUN apt-get install -y git
+RUN git config --global url."https://radureau:$GITHUB_ACCESS_TOKEN@github.com".insteadOf "https://github.com"
+
+RUN go env -w GOPRIVATE=github.com/radureau/my-heroku-app-pkg
+
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
-ENV buildcmd="go build -o ./herge-lab main.go"
-RUN $buildcmd -mod vendor || $buildcmd
+RUN go build -o ./herge-lab main.go
 
 FROM scratch
 
