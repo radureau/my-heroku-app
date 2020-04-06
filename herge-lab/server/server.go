@@ -1,6 +1,9 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/radureau/my-heroku-app-pkg/helloyou"
+)
 
 // Serve _
 func Serve() error {
@@ -10,5 +13,8 @@ func Serve() error {
 			"status": "OK",
 		})
 	})
+
+	helloyou.AddHandlers(r, "v1/helloyou")
+
 	return r.Run()
 }
