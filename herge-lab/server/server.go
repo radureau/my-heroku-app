@@ -1,19 +1,10 @@
 package server
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/radureau/my-heroku-app-pkg/helloyou"
+	"github.com/radureau/my-heroku-app/herge-lab/middleware"
 )
-
-var counter = 0 // subject to concurrent access
-
-func incMW(c *gin.Context) {
-	counter++
-	c.Header("nth-request", fmt.Sprintf("%d", counter))
-	c.Next()
-}
 
 // Serve _
 func Serve() error {
@@ -24,7 +15,7 @@ func Serve() error {
 		})
 	})
 
-	helloyou.AddHandlers(r, "helloyou/v1").Use(incMW)
+	helloyou.AddHandlers(r, "helloyou/v1", middleware.NthRequest("helloyou pkg"))
 
 	return r.Run()
 }
