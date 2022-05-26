@@ -1,6 +1,10 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/radureau/my-heroku-app-pkg/helloyou"
+	"github.com/radureau/my-heroku-app/herge-lab/middleware"
+)
 
 // Serve _
 func Serve() error {
@@ -10,5 +14,8 @@ func Serve() error {
 			"status": "OK",
 		})
 	})
+
+	helloyou.AddHandlers(r, "helloyou/v1", middleware.NthRequest("helloyou pkg"))
+
 	return r.Run()
 }
